@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { VenueCard } from "../styles/home/cards";
+import { VenuesContainer } from "../styles/home/container";
 
 type Accommodation = {
     id: string;
@@ -48,13 +50,17 @@ export function Home() {
     }, []);
 
     return (
-        <div>
+        <VenuesContainer>
             {posts.map((post) => (
-                <div key={post.id}>
+                <VenueCard key={post.id}>
                     <h2>{post.name}</h2>
-                    <p>{post.description}</p>
+                    {/* <p>{post.description}</p> */}
                     {post.media.length > 0 && (
-                        <img src={post.media[0].url} alt={post.media[0].alt} />
+                        <img
+                            src={post.media[0].url}
+                            loading="lazy"
+                            alt={post.media[0].alt}
+                        />
                     )}
                     <p>{post.price}</p>
                     <p>{post.maxGuests}</p>
@@ -63,8 +69,8 @@ export function Home() {
                     {post.meta.parking && <p>Parking</p>}
                     {post.meta.breakfast && <p>Breakfast</p>}
                     {post.meta.pets && <p>Pets</p>}
-                </div>
+                </VenueCard>
             ))}
-        </div>
+        </VenuesContainer>
     );
 }
