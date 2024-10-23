@@ -15,8 +15,8 @@ import {
     MdOutlinePeopleAlt,
     MdOutlinePets,
 } from "react-icons/md";
-import { ImPriceTags } from "react-icons/im";
-import { Stars } from "../components/global/global-comp";
+import { Stars } from "../components/global/rating";
+import { FiDollarSign } from "react-icons/fi";
 
 type Accommodation = {
     id: string;
@@ -81,7 +81,7 @@ export function Venues() {
                     <PriseAndGuests>
                         <div>
                             <p>{post.price}</p>
-                            <ImPriceTags />
+                            <FiDollarSign />
                         </div>
                         <div>
                             <p>{post.maxGuests}</p>
