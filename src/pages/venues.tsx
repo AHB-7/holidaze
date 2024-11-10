@@ -18,6 +18,7 @@ import { IoPeopleSharp } from "react-icons/io5";
 import { Accommodation } from "../types/global.types";
 import { useLikedVenues } from "../store/user-liked-venues";
 import useFetch from "../hooks/use-fetch";
+import { Link } from "react-router-dom";
 
 export function Venues() {
     const likedVenues = useLikedVenues((state) => state.likedVenues);
@@ -54,18 +55,20 @@ export function Venues() {
                             />
                         </VenueInfoContainer>
                         <VenueImageContainer>
-                            <img
-                                src={
-                                    post.media.length > 0
-                                        ? post.media[0].url
-                                        : ""
-                                }
-                                alt={
-                                    post.media.length > 0
-                                        ? post.media[0].alt
-                                        : "Image not available"
-                                }
-                            />
+                            <Link to={`/venues/${post.id}`}>
+                                <img
+                                    src={
+                                        post.media.length > 0
+                                            ? post.media[0].url
+                                            : ""
+                                    }
+                                    alt={
+                                        post.media.length > 0
+                                            ? post.media[0].alt
+                                            : "Image not available"
+                                    }
+                                />
+                            </Link>
                             <Stars rating={post.rating} />
                         </VenueImageContainer>
                         <VenueInfoContainer>

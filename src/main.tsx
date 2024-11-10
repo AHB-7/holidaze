@@ -8,12 +8,15 @@ import "@fontsource/noto-sans";
 import "@fontsource/noto-sans/400.css";
 import "@fontsource/noto-sans/700.css";
 import "@fontsource/noto-sans/400-italic.css";
+import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <App />
-        </ThemeProvider>{" "}
+            <BrowserRouter>
+                <GlobalStyle />
+                <App />
+            </BrowserRouter>
+        </ThemeProvider>
     </StrictMode>
 );

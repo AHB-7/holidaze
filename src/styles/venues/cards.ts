@@ -26,7 +26,8 @@ export const VenueInfoContainer = styled.div`
     padding: 0.5rem;
 `;
 export const VenueImageContainer = styled.div`
-    > img {
+    > a > img {
+        cursor: pointer;
         width: 100%;
         aspect-ratio: 1 / 1;
         object-fit: cover;
@@ -81,7 +82,7 @@ export const VenueBookingsButton = styled.button`
     color: ${({ theme }) => theme.colors.background};
     border: none;
     border-radius: 0.3rem;
-    padding: 0.5rem;
+    padding: 0.6rem;
     font-size: 1.1rem;
     cursor: pointer;
     transition: background-color 0.2s;
