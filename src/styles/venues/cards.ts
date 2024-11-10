@@ -1,75 +1,94 @@
+import { FaStar } from "react-icons/fa6";
 import styled from "styled-components";
 
 export const VenueCard = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: ${({ theme }) => theme.colors.background};
+    padding: 1rem 1rem 2rem 1rem;
+    gap: 0.5rem;
     border-radius: 1rem;
-    box-shadow: 0 0 0.05rem ${({ theme }) => theme.colors.shadow};
-    padding: 1rem;
+    border: 0.1rem solid ${({ theme }) => theme.colors.text};
     position: relative;
-    h2 {
-        margin: 0 0 0.8rem 1rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+`;
+export const VenueInfoContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2rem;
+    > h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
     }
+    > p {
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+    padding: 0.5rem;
+`;
+export const VenueImageContainer = styled.div`
     > img {
         width: 100%;
-        height: auto;
+        aspect-ratio: 1 / 1;
         object-fit: cover;
-        aspect-ratio: 1/1;
+        scale: 1;
+        transition: scale 0.2s;
+        &:hover {
+            scale: 1.01;
+        }
         border-radius: 1rem;
     }
+    position: relative;
 `;
-export const PriseAndGuests = styled.div`
-    position: absolute;
-    top: 3.5rem;
-    left: 0;
+
+export const StarsContainer = styled.div`
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    margin: 0 auto;
+    position: absolute;
+    bottom: 1rem;
+`;
+export const Star = styled(FaStar)<{ active: boolean }>`
+    fill: ${({ active }) => (active ? "gold" : "lightgray")};
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+`;
+export const VenueMetaContainer = styled.div`
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     align-items: center;
     justify-content: space-between;
-    font-size: 1.2rem;
-    padding: 1.5rem;
-    > div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column-reverse;
-        width: 100%;
-        max-width: 4rem;
-        height: 4rem;
-        border-radius: 0.5rem;
-        background-color: ${({ theme }) => theme.colors.background};
-    }
+    padding: 0.5rem 0.5rem 1rem 0.5rem;
 `;
-export const MetaContainer = styled.div`
+export const VenueMeta = styled.div`
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin: 0.5rem;
-    > div {
-        font-size: 1.5rem;
-    }
-    padding: 0 1rem;
-`;
-export const NoMeta = styled.div`
-    display: flex;
     justify-content: center;
-    align-items: center;
-    & * {
-        color: red;
+    gap: 0rem;
+    > p {
+        font-size: 1.3rem;
     }
-    width: 2rem;
-    height: 2rem;
+    font-size: 1.5rem;
+    border: 0.12rem solid ${({ theme }) => theme.colors.text};
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.3rem;
 `;
-export const WithMeta = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2rem;
-    height: 2rem;
+export const VenueBookingsButton = styled.button`
+    background-color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.background};
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    &:hover {
+        background-color: ${({ theme }) => theme.colors.primary};
+    }
+    &:active {
+        background-color: ${({ theme }) => theme.colors.secondary};
+    }
 `;

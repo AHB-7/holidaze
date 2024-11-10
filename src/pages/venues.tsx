@@ -1,134 +1,115 @@
-import { useEffect, useState } from "react";
 import {
-    MetaContainer,
-    NoMeta,
-    PriseAndGuests,
     VenueCard,
-    WithMeta,
+    VenueInfoContainer,
+    VenueImageContainer,
+    VenueMetaContainer,
+    VenueMeta,
+    VenueBookingsButton,
 } from "../styles/venues/cards";
 import { VenuesContainer } from "../styles/venues/container";
-import { RiWifiFill, RiWifiOffFill } from "react-icons/ri";
-import { LuParkingSquare, LuParkingSquareOff } from "react-icons/lu";
+import { FaHeart, FaWifi } from "react-icons/fa6";
+import { Stars } from "../components/global/rating";
 import {
-    MdFoodBank,
-    MdNoFood,
-    MdOutlinePeopleAlt,
+    MdLocalParking,
+    MdOutlineEmojiFoodBeverage,
     MdOutlinePets,
 } from "react-icons/md";
-import { Stars } from "../components/global/rating";
-import { FiDollarSign } from "react-icons/fi";
-
-type Accommodation = {
-    id: string;
-    name: string;
-    description: string;
-    media: {
-        url: string;
-        alt: string;
-    }[];
-    price: number;
-    maxGuests: number;
-    rating: number;
-    created: string;
-    updated: string;
-    meta: {
-        wifi: boolean;
-        parking: boolean;
-        breakfast: boolean;
-        pets: boolean;
-    };
-    location: {
-        address: string;
-        city: string;
-        zip: string;
-        country: string;
-        continent: string;
-        lat: number;
-        lng: number;
-    };
-    _count: {
-        bookings: number;
-    };
-};
+import { IoPeopleSharp } from "react-icons/io5";
+import { Accommodation } from "../types/global.types";
+import { useLikedVenues } from "../store/user-liked-venues";
+import useFetch from "../hooks/use-fetch";
 
 export function Venues() {
-    const [posts, setPosts] = useState<Accommodation[]>([]);
+    const likedVenues = useLikedVenues((state) => state.likedVenues);
+    const likeVenue = useLikedVenues((state) => state.likeVenue);
+    const unlikeVenue = useLikedVenues((state) => state.unlikeVenue);
+    const {
+        data: posts,
+        loading,
+        error,
+    } = useFetch<Accommodation[]>("https://v2.api.noroff.dev/holidaze/venues");
+    if (loading) return <p>Loading</p>;
+    if (error)
+        return <div>Error fetching products. Please try again later.</div>;
 
-    useEffect(() => {
-        async function getData() {
-            const url = "https://v2.api.noroff.dev/holidaze/venues";
-            const response = await fetch(url);
-            const json = await response.json();
-            const data = json.data;
-            setPosts(data);
+    const toggleLike = (venueId: string) => {
+        if (likedVenues.includes(venueId)) {
+            unlikeVenue(venueId);
+        } else {
+            likeVenue(venueId);
         }
-        getData();
-    }, []);
+    };
 
     return (
         <VenuesContainer>
-            {posts.map((post) => (
-                <VenueCard key={post.id}>
-                    <h2>{post.name}</h2>
-                    {/* <p>{post.description}</p> */}
-                    {post.media.length > 0 && (
-                        <img
-                            src={post.media[0].url}
-                            loading="lazy"
-                            alt={post.media[0].alt}
-                        />
-                    )}
-                    <PriseAndGuests>
-                        <div>
-                            <p>{post.price}</p>
-                            <FiDollarSign />
-                        </div>
-                        <div>
-                            <p>{post.maxGuests}</p>
-                            <MdOutlinePeopleAlt />
-                        </div>
-                    </PriseAndGuests>
-                    <Stars rating={post.rating} />
-                    <MetaContainer>
-                        {post.meta.wifi ? (
-                            <WithMeta>
-                                <RiWifiFill />
-                            </WithMeta>
-                        ) : (
-                            <NoMeta>
-                                <RiWifiOffFill />
-                            </NoMeta>
-                        )}
-                        {post.meta.parking ? (
-                            <WithMeta>
-                                <LuParkingSquare />
-                            </WithMeta>
-                        ) : (
-                            <NoMeta>
-                                <LuParkingSquareOff />
-                            </NoMeta>
-                        )}
-                        {post.meta.breakfast ? (
-                            <WithMeta>
-                                <MdFoodBank />
-                            </WithMeta>
-                        ) : (
-                            <NoMeta>
-                                <MdNoFood />
-                            </NoMeta>
-                        )}
-                        {post.meta.pets ? (
-                            <WithMeta>
-                                <MdOutlinePets />
-                            </WithMeta>
-                        ) : (
-                            <NoMeta>
-                                <MdOutlinePets />
-                            </NoMeta>
-                        )}
-                    </MetaContainer>
-                </VenueCard>
-            ))}
+            {posts?.map((post) => {
+                const isLiked = likedVenues.includes(post.id);
+                return (
+                    <VenueCard key={post.id}>
+                        <VenueInfoContainer>
+                            <h2>{post.name}</h2>
+                            <FaHeart
+                                onClick={() => toggleLike(post.id)}
+                                fill={isLiked ? "red" : "grey"}
+                            />
+                        </VenueInfoContainer>
+                        <VenueImageContainer>
+                            <img
+                                src={
+                                    post.media.length > 0
+                                        ? post.media[0].url
+                                        : ""
+                                }
+                                alt={
+                                    post.media.length > 0
+                                        ? post.media[0].alt
+                                        : "Image not available"
+                                }
+                            />
+                            <Stars rating={post.rating} />
+                        </VenueImageContainer>
+                        <VenueInfoContainer>
+                            <p>Price</p>
+                            <p>{post.price} NOK</p>
+                        </VenueInfoContainer>
+                        <VenueMetaContainer>
+                            <VenueMeta>
+                                {post.meta.wifi ? (
+                                    <FaWifi />
+                                ) : (
+                                    <FaWifi fill="lightgrey" />
+                                )}
+                            </VenueMeta>
+                            <VenueMeta>
+                                {post.meta.pets ? (
+                                    <MdOutlinePets />
+                                ) : (
+                                    <MdOutlinePets fill="lightgrey" />
+                                )}
+                            </VenueMeta>
+                            <VenueMeta>
+                                {post.meta.parking ? (
+                                    <MdLocalParking />
+                                ) : (
+                                    <MdLocalParking fill="lightgrey" />
+                                )}
+                            </VenueMeta>
+                            <VenueMeta>
+                                {post.meta.breakfast ? (
+                                    <MdOutlineEmojiFoodBeverage />
+                                ) : (
+                                    <MdOutlineEmojiFoodBeverage fill="lightgrey" />
+                                )}
+                            </VenueMeta>
+                            <VenueMeta>
+                                <p> {post.maxGuests}</p>
+                                <IoPeopleSharp />
+                            </VenueMeta>
+                        </VenueMetaContainer>
+                        <VenueBookingsButton>Book Now</VenueBookingsButton>
+                    </VenueCard>
+                );
+            })}
         </VenuesContainer>
     );
 }

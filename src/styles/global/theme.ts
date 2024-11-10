@@ -1,7 +1,8 @@
 const baseTheme = {
     colors: {
-        primary: "#F97300",
+        primary: "#2B699B",
         secondary: "#2ecc71",
+        dangerous: "#FF0000",
     },
     breakpoints: {
         sm: "600px",
@@ -14,8 +15,8 @@ export const lightTheme = {
     ...baseTheme,
     colors: {
         ...baseTheme.colors,
-        background: "#EEEEEE",
-        text: "#040D12",
+        background: "#E8EBF0",
+        text: "#100F0F",
     },
 };
 
@@ -23,8 +24,8 @@ export const darkTheme = {
     ...baseTheme,
     colors: {
         ...baseTheme.colors,
-        background: "#040D12",
-        text: "#EEEEEE",
+        background: "#100F0F",
+        text: "#E8EBF0",
     },
 };
 

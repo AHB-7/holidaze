@@ -25,10 +25,10 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
   }
   colors{
-  primary: #FFC107,
-  secondary: #343A40,
-  text: #343A40,
-  background: #F8F9FA,
-  shadow: #00000029,
+  primary: "#2B699B",
+  secondary: "#2ecc71",
+  dangerous: "#FF0000",
+  text: #100F0F,
+  background: #E8EBF0,
   }
 `;
