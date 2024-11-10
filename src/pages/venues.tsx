@@ -55,7 +55,9 @@ export function Venues() {
                             />
                         </VenueInfoContainer>
                         <VenueImageContainer>
-                            <Link to={`/venues/${post.id}`}>
+                            <Link
+                                to={`/venues/${post.id}?_owner=true&_bookings=true`}
+                            >
                                 <img
                                     src={
                                         post.media.length > 0
