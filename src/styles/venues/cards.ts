@@ -7,7 +7,7 @@ export const VenueCard = styled.div`
     padding: 1rem 1rem 2rem 1rem;
     gap: 0.5rem;
     border-radius: 1rem;
-    border: 0.1rem solid ${({ theme }) => theme.colors.text};
+    border: 0.01rem solid ${({ theme }) => theme.colors.text};
     position: relative;
 `;
 export const VenueInfoContainer = styled.div`

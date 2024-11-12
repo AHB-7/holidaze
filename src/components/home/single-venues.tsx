@@ -30,19 +30,24 @@ export function SingleVenues() {
                 <p>{venue?.price}</p>{" "}
                 <div>
                     {venue?.media?.length ? (
-                        venue.media.map((mediaItem, index) => (
-                            <img
-                                key={index}
-                                src={mediaItem.url}
-                                alt={mediaItem.alt}
-                                style={{
-                                    display: "block",
-                                    width: "100%",
-                                    maxWidth: "300px",
-                                    marginBottom: "10px",
-                                }}
-                            />
-                        ))
+                        venue.media.map(
+                            (
+                                mediaItem: { url: string; alt: string },
+                                index
+                            ) => (
+                                <img
+                                    key={index}
+                                    src={mediaItem.url}
+                                    alt={mediaItem.alt}
+                                    style={{
+                                        display: "block",
+                                        width: "100%",
+                                        maxWidth: "300px",
+                                        marginBottom: "10px",
+                                    }}
+                                />
+                            )
+                        )
                     ) : (
                         <p>No media available</p>
                     )}

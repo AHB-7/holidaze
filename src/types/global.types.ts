@@ -37,7 +37,7 @@ export type SingleVenue = {
     media: {
         url: string;
         alt: string;
-    };
+    }[];
     price: number;
     maxGuests: number;
     rating: number;

@@ -1,5 +1,7 @@
 import styled from "styled-components";
 export const VenuesContainer = styled.section`
+    margin-top: 4rem;
+    position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1rem;
