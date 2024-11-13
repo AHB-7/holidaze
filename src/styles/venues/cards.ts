@@ -1,4 +1,3 @@
-import { FaStar } from "react-icons/fa6";
 import styled from "styled-components";
 
 export const VenueCard = styled.div`
@@ -50,12 +49,8 @@ export const StarsContainer = styled.div`
     position: absolute;
     bottom: 1rem;
 `;
-export const Star = styled(FaStar)<{ active: boolean }>`
-    fill: ${({ active }) => (active ? "gold" : "lightgray")};
-    font-size: 2rem;
-    cursor: pointer;
-    transition: color 0.2s;
-`;
+
+
 export const VenueMetaContainer = styled.div`
     display: flex;
     gap: 1rem;

@@ -1,24 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
+import { FetchOptions } from "../types/global.types";
 
-function useFetch<T>(url: string) {
+function useFetch<T>(url: string, options?: FetchOptions) {
     const [data, setData] = useState<T | null>(null);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
 
-    useEffect(() => {
-        fetch(url)
-            .then((res) => res.json())
-            .then((responseData: { data: T }) => {
-                setData(responseData.data);
-                setLoading(false);
-            })
-            .catch((err: Error) => {
-                setError(err);
-                setLoading(false);
-            });
-    }, [url]);
+    // Fetch data manually
+    const fetchData = useCallback(async () => {
+        setLoading(true);
+        try {
+            const headers: HeadersInit = {
+                "Content-Type": "application/json",
+            };
 
-    return { data, loading, error };
+            if (options?.accessToken) {
+                headers["Authorization"] = `Bearer ${options.accessToken}`;
+            }
+
+            const response = await fetch(url, {
+                method: options?.method || "GET",
+                headers,
+                body: options?.body ? JSON.stringify(options.body) : undefined,
+            });
+
+            if (!response.ok) {
+                throw new Error(
+                    `Error: ${response.status} ${response.statusText}`
+                );
+            }
+
+            const responseData = await response.json();
+            setData(responseData);
+        } catch (err) {
+            setError(err as Error);
+        } finally {
+            setLoading(false);
+        }
+    }, [url, options]);
+
+    return { data, loading, error, fetchData };
 }
 
 export default useFetch;

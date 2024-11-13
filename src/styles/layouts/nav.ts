@@ -28,29 +28,39 @@ export const LowerNav = styled.div`
     font-weight: 900;
     padding: 1rem;
     gap: 1rem;
-    > h2 {
-        color: ${({ theme }) => theme.colors.background};
-    }
     > * {
         color: ${({ theme }) => theme.colors.background};
     }
 `;
-export const LogOut = styled.a`
-    font-size: 1rem;
-    justify-self: end;
-    color: red;
-`;
+
 export const LogInContainer = styled.div`
     display: flex;
+    background-color: transparent;
+    border: none;
     align-items: center;
     justify-content: center;
     gap: 0.1rem;
+    transition: all 0.2s;
+    &:hover {
+        cursor: pointer;
+        scale: 1.05;
+    }
     > p {
         font-size: 1.3rem;
         color: ${({ theme }) => theme.colors.background};
     }
     > svg {
         font-size: 1.7rem;
+    }
+`;
+export const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    width: 100%;
+    align-items: center;
+    > h2 {
+        color: ${({ theme }) => theme.colors.background};
     }
 `;
 export const FormInput = styled.input`
@@ -60,7 +70,6 @@ export const FormInput = styled.input`
     padding: 0.6rem;
     font-size: 1rem;
     width: 100%;
-    margin: 1rem 0;
     background-color: transparent;
     color: ${({ theme }) => theme.colors.background};
     outline: none;
@@ -82,5 +91,21 @@ export const SubmitBtn = styled.button`
     transition: background-color 0.2s;
     &:hover {
         background-color: ${({ theme }) => theme.colors.secondary};
+    }
+`;
+export const LogOut = styled.a`
+    font-size: 1rem;
+    justify-self: end;
+    cursor: pointer;
+    color: red;
+`;
+export const RegBtn = styled(LogOut)`
+    color: ${({ theme }) => theme.colors.background};
+    cursor: pointer;
+    aling-self: center;
+    transition: 0.2s;
+    &:hover {
+        text-decoration: underline;
+        color: ${({ theme }) => theme.colors.secondary};
     }
 `;

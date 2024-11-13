@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
     VenueCard,
     VenueInfoContainer,
@@ -21,20 +22,40 @@ import useFetch from "../../hooks/use-fetch";
 import { Link } from "react-router-dom";
 
 export function Venues() {
+    // Use hooks at the top level, always in the same order
     const likedVenues = useLikedVenues((state) => state.likedVenues);
     const likeVenue = useLikedVenues((state) => state.likeVenue);
     const unlikeVenue = useLikedVenues((state) => state.unlikeVenue);
+
+    // Use the fetch hook to retrieve venues
     const {
-        data: posts,
+        data: responseData,
         loading,
         error,
-    } = useFetch<Accommodation[]>(
+        fetchData,
+    } = useFetch<{ data: Accommodation[] }>(
         "https://v2.api.noroff.dev/holidaze/venues?sortOrder=desc&sort=created"
     );
-    if (loading) return <p>Loading</p>;
-    if (error)
-        return <div>Error fetching products. Please try again later.</div>;
 
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
+    const posts = responseData?.data;
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <div>Error fetching venues. Please try again later.</div>;
+    }
+
+    if (!posts || posts.length === 0) {
+        return <p>No venues available.</p>;
+    }
+
+    // Helper function for toggling likes
     const toggleLike = (venueId: string) => {
         if (likedVenues.includes(venueId)) {
             unlikeVenue(venueId);
@@ -45,7 +66,7 @@ export function Venues() {
 
     return (
         <VenuesContainer>
-            {posts?.map((post) => {
+            {posts.map((post) => {
                 const isLiked = likedVenues.includes(post.id);
                 return (
                     <VenueCard key={post.id}>
@@ -64,7 +85,7 @@ export function Venues() {
                                     src={
                                         post.media.length > 0
                                             ? post.media[0].url
-                                            : ""
+                                            : "placeholder-image-url.jpg" // Fallback if no image is available
                                     }
                                     alt={
                                         post.media.length > 0
@@ -81,35 +102,35 @@ export function Venues() {
                         </VenueInfoContainer>
                         <VenueMetaContainer>
                             <VenueMeta>
-                                {post.meta.wifi ? (
+                                {post.meta?.wifi ? (
                                     <FaWifi />
                                 ) : (
                                     <FaWifi fill="lightgrey" />
                                 )}
                             </VenueMeta>
                             <VenueMeta>
-                                {post.meta.pets ? (
+                                {post.meta?.pets ? (
                                     <MdOutlinePets />
                                 ) : (
                                     <MdOutlinePets fill="lightgrey" />
                                 )}
                             </VenueMeta>
                             <VenueMeta>
-                                {post.meta.parking ? (
+                                {post.meta?.parking ? (
                                     <MdLocalParking />
                                 ) : (
                                     <MdLocalParking fill="lightgrey" />
                                 )}
                             </VenueMeta>
                             <VenueMeta>
-                                {post.meta.breakfast ? (
+                                {post.meta?.breakfast ? (
                                     <MdOutlineEmojiFoodBeverage />
                                 ) : (
                                     <MdOutlineEmojiFoodBeverage fill="lightgrey" />
                                 )}
                             </VenueMeta>
                             <VenueMeta>
-                                <p> {post.maxGuests}</p>
+                                <p>{post.maxGuests}</p>
                                 <IoPeopleSharp />
                             </VenueMeta>
                         </VenueMetaContainer>

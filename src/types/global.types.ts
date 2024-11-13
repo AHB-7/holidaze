@@ -82,3 +82,8 @@ export interface FetchResult<T> {
     loading: boolean;
     error: Error | null;
 }
+export interface FetchOptions {
+    method?: "GET" | "POST" | "PUT" | "DELETE";
+    body?: Record<string, unknown>;
+    accessToken?: string;
+}
