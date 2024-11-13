@@ -9,10 +9,13 @@ export const Navbar = styled.nav`
     position: fixed;
     top: 0.5rem;
     margin: 0 1rem;
-    @media screen and (max-width: 450px) {
+    @media screen and (max-width: 500px) {
         margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
     }
     z-index: 100;
+    overflow: auto;
 `;
 export const UpperNav = styled.div`
     display: flex;
@@ -98,6 +101,11 @@ export const LogOut = styled.a`
     justify-self: end;
     cursor: pointer;
     color: red;
+    background-color: transparent;
+    border: none;
+    transition: 0.2s;
+    &:hover {
+    color: grey;
 `;
 export const RegBtn = styled(LogOut)`
     color: ${({ theme }) => theme.colors.background};

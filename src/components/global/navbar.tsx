@@ -1,3 +1,4 @@
+// src/components/Navbar.tsx
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import {
@@ -60,9 +61,15 @@ export function Navbar() {
 
                 const responseData = await response.json();
 
-                // Assuming responseData contains user information and accessToken
-                if (responseData && responseData.accessToken) {
-                    login(responseData.user, responseData.accessToken);
+                // Correctly access data from responseData
+                if (
+                    responseData &&
+                    responseData.data &&
+                    responseData.data.accessToken
+                ) {
+                    login(responseData.data, responseData.data.accessToken);
+                } else {
+                    throw new Error("Invalid response structure");
                 }
             } catch (err) {
                 console.error("Failed to log in:", err);
@@ -70,16 +77,23 @@ export function Navbar() {
         }
     };
 
-    // Handle Register Form Submission
+    // Updated handleRegistering function in Navbar component
+
     const handleRegistering = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.target as HTMLFormElement);
-        const email = formData.get("email");
-        const password = formData.get("password");
-        const name = formData.get("name");
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        const name = formData.get("name") as string;
+        const bio = formData.get("bio") as string;
+        const avatarUrl = formData.get("avatarUrl") as string;
+        const avatarAlt = formData.get("avatarAlt") as string;
+        const bannerUrl = formData.get("bannerUrl") as string;
+        const bannerAlt = formData.get("bannerAlt") as string;
+        const venueManager = true;
 
-        if (typeof email === "string" && typeof password === "string") {
+        if (email && password && name) {
             try {
                 const response = await fetch(
                     "https://v2.api.noroff.dev/auth/register",
@@ -92,6 +106,16 @@ export function Navbar() {
                             email,
                             password,
                             name,
+                            bio,
+                            avatar: {
+                                url: avatarUrl,
+                                alt: avatarAlt,
+                            },
+                            banner: {
+                                url: bannerUrl,
+                                alt: bannerAlt,
+                            },
+                            venueManager,
                         }),
                     }
                 );
@@ -104,15 +128,22 @@ export function Navbar() {
 
                 const responseData = await response.json();
 
-                // Assuming responseData contains user information and accessToken
-                if (responseData && responseData.accessToken) {
-                    login(responseData.user, responseData.accessToken);
+                if (
+                    responseData &&
+                    responseData.data &&
+                    responseData.data.accessToken
+                ) {
+                    login(responseData.data, responseData.data.accessToken);
+                } else {
+                    throw new Error("Invalid response structure");
                 }
             } catch (err) {
                 console.error("Failed to register:", err);
             }
         }
     };
+
+    const userName = useUserStore((state) => state.user?.name);
 
     return (
         <NavbarSc>
@@ -139,7 +170,7 @@ export function Navbar() {
                 <>
                     {active && (
                         <LowerNav>
-                            <Link to="/profile">Profile</Link>
+                            <Link to={`/profiles/${userName}`}>Profile</Link>
                             <Link to="/booking">Booking</Link>
                             <LogOut as="button" onClick={logout}>
                                 Logout
@@ -158,11 +189,13 @@ export function Navbar() {
                                         type="text"
                                         name="email"
                                         placeholder="Email"
+                                        required
                                     />
                                     <FormInput
                                         type="password"
                                         name="password"
                                         placeholder="Password"
+                                        required
                                     />
                                     <SubmitBtn type="submit">Login</SubmitBtn>
                                     <RegBtn onClick={toggleRegisterModal}>
@@ -176,32 +209,54 @@ export function Navbar() {
                                         type="text"
                                         name="email"
                                         placeholder="Email"
+                                        required
                                     />
                                     <FormInput
                                         type="password"
                                         name="password"
                                         placeholder="Password"
+                                        required
                                     />
                                     <FormInput
                                         type="text"
                                         name="name"
                                         placeholder="Name"
-                                    />
-                                    <FormInput
-                                        type="text"
-                                        name="banner"
-                                        placeholder="Banner"
-                                    />
-                                    <FormInput
-                                        type="text"
-                                        name="avatar"
-                                        placeholder="Avatar"
+                                        required
                                     />
                                     <FormInput
                                         type="text"
                                         name="bio"
                                         placeholder="Bio"
                                     />
+
+                                    <FormInput
+                                        type="text"
+                                        name="avatarUrl"
+                                        placeholder="Avatar URL"
+                                    />
+                                    <FormInput
+                                        type="text"
+                                        name="avatarAlt"
+                                        placeholder="Avatar Alt Text"
+                                    />
+
+                                    <FormInput
+                                        type="text"
+                                        name="bannerUrl"
+                                        placeholder="Banner URL"
+                                    />
+                                    <FormInput
+                                        type="text"
+                                        name="bannerAlt"
+                                        placeholder="Banner Alt Text"
+                                    />
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name="venueManager"
+                                        />
+                                        I
+                                    </label>
                                     <SubmitBtn type="submit">
                                         Register
                                     </SubmitBtn>
