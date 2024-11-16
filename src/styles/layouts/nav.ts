@@ -117,3 +117,14 @@ export const RegBtn = styled(LogOut)`
         color: ${({ theme }) => theme.colors.secondary};
     }
 `;
+export const TwoInputsInRow = styled.div`
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+`;
+export const ErrorMessage = styled.p`
+    color: red;
+    font-size: 0.9rem;
+    font-weight: bold;
+`;
